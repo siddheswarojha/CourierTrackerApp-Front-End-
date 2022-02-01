@@ -24,5 +24,6 @@ public class SplashScreenActivity extends AppCompatActivity {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        th.start();
     }
 }

@@ -11,8 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.CourierTracker">
-        <activity android:name=".Activity.SearchPackageActivity"></activity>
-        <activity android:name=".Activity.SplashScreenActivity"
+        <activity android:name=".Activity.ActivityDeliveryDetails"></activity>
+        <activity android:name=".Activity.SearchPackageActivity" />
+        <activity
+            android:name=".Activity.SplashScreenActivity"
             android:exported="true"
             android:screenOrientation="portrait">
             <intent-filter>
@@ -20,12 +22,10 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".MainActivity"
-            android:exported="true">
-        </activity>
+            android:exported="true"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
