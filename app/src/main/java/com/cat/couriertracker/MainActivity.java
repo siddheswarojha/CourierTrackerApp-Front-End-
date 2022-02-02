@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         deliveryLocation=new ArrayList<>();
 
 
-        getAllTrackingDetailsAdapter = new GetAllTrackingDetails(orderId,name,itemType,startLocation,currentLocation,expectedDeliveryDate,status,deliveryLocation);
+        getAllTrackingDetailsAdapter = new GetAllTrackingDetails(orderId,name,status);
 
 
         btnGetTrackingDetails.setOnClickListener(new View.OnClickListener() {
