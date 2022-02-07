@@ -3,10 +3,9 @@
     <item>
 
         <shape>
-            <corners android:radius="35sp"/>
+            <corners android:radius="10sp"/>
 
             <gradient
-                android:angle="45"
 
                 android:startColor="@color/orangeAppColour"
                 android:centerColor="@color/orangeAppColour"
