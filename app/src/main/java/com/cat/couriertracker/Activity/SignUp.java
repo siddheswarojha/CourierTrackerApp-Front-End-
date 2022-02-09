@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -81,6 +82,24 @@ public class SignUp extends AppCompatActivity {
 
 
 
+                if(response.equals("Registered"))
+                {
+                    Toast.makeText(SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
+
+                    Intent i = new Intent(SignUp.this,Login.class);
+                    startActivity(i);
+                }
+                else if(response.equals("Email Address already in use"))
+                {
+                    Toast.makeText(SignUp.this, "Email Address already in use", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Toast.makeText(SignUp.this, "Please Try Again Later", Toast.LENGTH_SHORT).show();
+                }
+
+
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -100,9 +119,9 @@ public class SignUp extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()  {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("name","name");
-                params.put("password","password");
-                params.put("emailAddress","EmailNew");
+                params.put("name",name);
+                params.put("password",password);
+                params.put("emailAddress",email);
                 Log.d("paramsValue", String.valueOf(params));
                 return params;
 
