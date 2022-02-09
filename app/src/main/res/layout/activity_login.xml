@@ -49,9 +49,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="\tEmail"
-                    android:drawableLeft="@drawable/ic_baseline_mail_24"
-                    android:inputType="phone"
-                    android:maxLength="10" />
+                    android:drawableLeft="@drawable/ic_baseline_mail_24" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -74,9 +72,7 @@
                     android:id="@+id/etPasswordSignIn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="\tPassword"
-                    android:inputType="phone"
-                    android:maxLength="10" />
+                    android:hint="\tPassword" />
 
 
 
@@ -98,7 +94,7 @@
 
 
             <Button
-                android:id="@+id/btnSignIn"
+                android:id="@+id/btnLogin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_button"

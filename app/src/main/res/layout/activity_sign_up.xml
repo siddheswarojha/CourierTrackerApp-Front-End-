@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:hint="\tName"
                     android:drawableLeft="@drawable/ic_person_login"
-                    android:maxLength="10" />
+                     />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -76,7 +76,7 @@
                     android:layout_height="wrap_content"
                     android:hint="\tEmail"
                     android:drawableLeft="@drawable/ic_baseline_mail_24"
-                    android:maxLength="10" />
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="\tPassword"
-                    android:maxLength="10" />
+                  />
 
 
 
