@@ -5,6 +5,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -14,25 +17,64 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.cat.couriertracker.R;
+import com.shuhart.stepview.StepView;
+
 import org.json.JSONObject;
 
 public class ActivityDeliveryDetails extends AppCompatActivity {
+
+    Button btnGenerateBill,btnCancelParcel;
+
+    TextView tvOrderStatus, tvOrderOrderId,tvOrderName,tvOrderDeliveryLocation,tvOrderDeliveryDate;
+    StepView stepView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delivery_details);
 
+        //hooks
+        btnGenerateBill = findViewById(R.id.btnGenerateBill);
+        btnCancelParcel=findViewById(R.id.btnCancelPackage);
+        tvOrderDeliveryDate=findViewById(R.id.tvOrderDeliveryDate);
+        tvOrderStatus=findViewById(R.id.tvOrderStatus);
+        tvOrderOrderId=findViewById(R.id.tvOrderOrderId);
+        tvOrderName=findViewById(R.id.tvOrderName);
+        tvOrderDeliveryLocation=findViewById(R.id.tvOrderDeliveryLocation);
+        stepView=findViewById(R.id.stepView);
+
+
 
         Intent i = getIntent();
         String orderId = i.getStringExtra("orderId");
 
         getTrackingDetailsForOrderId(orderId);
+
+        btnGenerateBill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(ActivityDeliveryDetails.this, "Bill", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+
+        btnCancelParcel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelPackage();
+            }
+        });
+
+
+
+
+    }
+
+    private void cancelPackage() {
     }
 
 
-
-        private void getTrackingDetailsForOrderId(String orderId)
+    private void getTrackingDetailsForOrderId(String orderId)
     {
         String url = "https://courier-application-tracker.herokuapp.com/api/v1/cat/getTrackingDetail/"+orderId;
 
@@ -50,8 +92,29 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
 
                 try {
 
+                    String status = response.getString("status");
+                    tvOrderStatus.setText(response.getString("status"));
+                    tvOrderDeliveryDate.setText("Delivery Date: "+response.getString("expectedDeliveryDate"));
+                    tvOrderOrderId.setText("Order ID: "+ response.getString("orderId"));
+                    tvOrderName.setText("Name: "+response.getString("name"));
+                    tvOrderDeliveryLocation.setText("Delivery Address: "+response.getString("deliveryLocation"));
 
-
+                    if(status.equals("Order Placed"))
+                    {
+                        stepView.go(1,true);
+                    }
+                    if(status.equals("Dispatched"))
+                    {
+                        stepView.go(2,true);
+                    }
+                    if(status.equals("In Transit"))
+                    {
+                        stepView.go(3,true);
+                    }
+                    if(status.equals("Delivered"))
+                    {
+                        stepView.go(4,true);
+                    }
 
 
                 } catch (Exception e) {
