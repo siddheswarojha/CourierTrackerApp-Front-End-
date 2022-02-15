@@ -17,7 +17,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         th = new Thread();
         try {
             th.sleep(300);
-            Intent i = new Intent(SplashScreenActivity.this,SearchPackageActivity.class);
+            Intent i = new Intent(SplashScreenActivity.this,Login.class);
             startActivity(i);
 
 

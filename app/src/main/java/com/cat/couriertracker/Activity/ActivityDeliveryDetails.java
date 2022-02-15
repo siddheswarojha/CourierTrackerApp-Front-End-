@@ -2,6 +2,7 @@ package com.cat.couriertracker.Activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -15,11 +16,15 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cat.couriertracker.R;
 import com.shuhart.stepview.StepView;
 
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ActivityDeliveryDetails extends AppCompatActivity {
 
@@ -61,7 +66,7 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
         btnCancelParcel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                cancelPackage();
+                cancelPackage(orderId);
             }
         });
 
@@ -70,7 +75,44 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
 
     }
 
-    private void cancelPackage() {
+    private void cancelPackage(String orderId)
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(ActivityDeliveryDetails.this);
+        String url = "https://courier-application-tracker.herokuapp.com/api/v1/cat/cancelDelivery/"+ orderId;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.DELETE, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("responseCancelDelivery", response);
+
+                if(response.equals("Order Canceled")){
+                    Toast.makeText(ActivityDeliveryDetails.this, "", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActivityDeliveryDetails.this,SearchPackageActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                else
+                {
+                    Toast.makeText(ActivityDeliveryDetails.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("errorFound", error.toString());
+            }
+        }) {
+
+
+
+
+        };
+
+        requestQueue.add(stringRequest);
     }
 
 
