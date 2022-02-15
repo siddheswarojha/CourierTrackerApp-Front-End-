@@ -58,7 +58,7 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
         btnGenerateBill.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(ActivityDeliveryDetails.this, "Bill", Toast.LENGTH_SHORT).show();
+               generateBill(orderId);
             }
         });
 
@@ -75,6 +75,48 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
 
     }
 
+    private void generateBill(String orderId)
+    {
+        RequestQueue requestQueue = Volley.newRequestQueue(ActivityDeliveryDetails.this);
+        String url = "https://courier-application-tracker.herokuapp.com/api/v1/cat/generateBill/"+ orderId;
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d("responseGenerateBill", response);
+
+                if(response.equals("Success")){
+                    Toast.makeText(ActivityDeliveryDetails.this, "Billi generated will be sent via mail", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(ActivityDeliveryDetails.this,SearchPackageActivity.class);
+                    startActivity(i);
+                    finish();
+                }
+                else
+                {
+
+                    Toast.makeText(ActivityDeliveryDetails.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                }
+
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("errorFound", error.toString());
+            }
+        }) {
+
+
+
+
+        };
+
+        requestQueue.add(stringRequest);
+    }
+
+
     private void cancelPackage(String orderId)
     {
         RequestQueue requestQueue = Volley.newRequestQueue(ActivityDeliveryDetails.this);
@@ -87,13 +129,14 @@ public class ActivityDeliveryDetails extends AppCompatActivity {
                 Log.d("responseCancelDelivery", response);
 
                 if(response.equals("Order Canceled")){
-                    Toast.makeText(ActivityDeliveryDetails.this, "", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ActivityDeliveryDetails.this, "Cancelled Successfully", Toast.LENGTH_SHORT).show();
                     Intent i = new Intent(ActivityDeliveryDetails.this,SearchPackageActivity.class);
                     startActivity(i);
                     finish();
                 }
                 else
                 {
+
                     Toast.makeText(ActivityDeliveryDetails.this, "Something went wrong", Toast.LENGTH_SHORT).show();
                 }
 
