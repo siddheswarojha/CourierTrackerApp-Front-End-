@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cat.couriertracker.R;
+import com.github.ybq.android.spinkit.style.ChasingDots;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +31,7 @@ public class Login extends AppCompatActivity {
     EditText etEmailSignIn,etPasswordSignIn;
     Button btnLogin,btnGoToSignUp;
     TextView tvForgotPassword;
+    ProgressBar spin_kit_login;
 
     private String APIKey;
 
@@ -46,6 +49,12 @@ public class Login extends AppCompatActivity {
         btnGoToSignUp=findViewById(R.id.btnGoToSignUp);
         btnLogin=findViewById(R.id.btnLogin);
         tvForgotPassword=findViewById(R.id.tvForgotPassword);
+        spin_kit_login=findViewById(R.id.spin_kit_login);
+
+
+        ChasingDots chasingDots = new ChasingDots();
+        spin_kit_login.setIndeterminateDrawable(chasingDots);
+
 
         sharedPreferences = getSharedPreferences(SHARED_PREF_NAME,MODE_PRIVATE);
 
@@ -69,6 +78,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                spin_kit_login.setVisibility(View.VISIBLE);
                 String email= etEmailSignIn.getText().toString().trim();
                 String password = etPasswordSignIn.getText().toString().trim();
 
@@ -97,6 +107,7 @@ public class Login extends AppCompatActivity {
                     APIKey= response;
                     if(APIKey.equals(null))
                     {
+                        spin_kit_login.setVisibility(View.GONE);
                         Toast.makeText(Login.this,"Enter the details properly!",Toast.LENGTH_SHORT).show();
                         etEmailSignIn.setError("Your phone number or password is wrong, please enter the correct credentials!");
                         etEmailSignIn.requestFocus();
@@ -110,6 +121,7 @@ public class Login extends AppCompatActivity {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         editor.putString(KEY_APIKEY,APIKey);
                         editor.apply();
+                        spin_kit_login.setVisibility(View.GONE);
 
                         Intent i = new Intent(Login.this,SearchPackageActivity.class);
                         startActivity(i);
@@ -130,13 +142,6 @@ public class Login extends AppCompatActivity {
             }
         }) {
 
-//        @Override
-//        public Map<String, String> getHeaders() throws AuthFailureError{
-//        HashMap<String, String> headers = new HashMap<String, String>();
-//        headers.put("Content-Type", "application/json");
-//        headers.put( "charset", "utf-8");
-//        return headers;
-//    }
 
             @Override
             protected Map<String, String> getParams()  {

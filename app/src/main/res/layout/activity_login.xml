@@ -136,6 +136,20 @@
                 app:layout_constraintBottom_toBottomOf="@id/ITLorderId"
                 />
 
+
+            <com.github.ybq.android.spinkit.SpinKitView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/spin_kit_login"
+                style="@style/SpinKitView.Large.Circle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="gone"
+                app:SpinKit_Color="@color/orangeAppColour" />
+
+
+
+
         </LinearLayout>
     </ScrollView>
 

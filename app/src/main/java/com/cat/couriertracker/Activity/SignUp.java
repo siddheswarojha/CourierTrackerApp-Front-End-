@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +21,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.cat.couriertracker.R;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.style.ChasingDots;
 
 import org.json.JSONObject;
 
@@ -33,16 +36,23 @@ public class SignUp extends AppCompatActivity {
     Button btnSignUp;
     TextView tvGoToLogin;
 
+    ProgressBar spin_kit_signup;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
         etEmailSignUp = findViewById(R.id.etEmailSignUp);
         etNameSignUp=findViewById(R.id.etNameSignUp);
         etPasswordSignUp = findViewById(R.id.etPasswordSignUp);
         btnSignUp=findViewById(R.id.btnSignUp);
         tvGoToLogin=findViewById(R.id.tvGotoLoginPage);
+        spin_kit_signup=findViewById(R.id.spin_kit_signup);
+
+
+        ChasingDots chasingDots = new ChasingDots();
+        spin_kit_signup.setIndeterminateDrawable(chasingDots);
 
 
 
@@ -51,6 +61,7 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                spin_kit_signup.setVisibility(View.VISIBLE);
                 String name = etNameSignUp.getText().toString().trim();
                 String password = etPasswordSignUp.getText().toString().trim();
                 String email = etEmailSignUp.getText().toString().trim();
@@ -78,12 +89,11 @@ public class SignUp extends AppCompatActivity {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("responseFromServer",response);
-
 
 
                 if(response.equals("Registered"))
                 {
+                    spin_kit_signup.setVisibility(View.GONE);
                     Toast.makeText(SignUp.this, "Registered Successfully", Toast.LENGTH_SHORT).show();
 
                     Intent i = new Intent(SignUp.this,Login.class);
@@ -91,10 +101,12 @@ public class SignUp extends AppCompatActivity {
                 }
                 else if(response.equals("Email Address already in use"))
                 {
+                    spin_kit_signup.setVisibility(View.GONE);
                     Toast.makeText(SignUp.this, "Email Address already in use", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
+                    spin_kit_signup.setVisibility(View.GONE);
                     Toast.makeText(SignUp.this, "Please Try Again Later", Toast.LENGTH_SHORT).show();
                 }
 
@@ -104,17 +116,11 @@ public class SignUp extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("errorFound", error.toString());
+                Toast.makeText(SignUp.this, "Something unusual occurred", Toast.LENGTH_SHORT).show();
             }
         }) {
 
-//        @Override
-//        public Map<String, String> getHeaders() throws AuthFailureError{
-//        HashMap<String, String> headers = new HashMap<String, String>();
-//        headers.put("Content-Type", "application/json");
-//        headers.put( "charset", "utf-8");
-//        return headers;
-//    }
+
 
             @Override
             protected Map<String, String> getParams()  {
